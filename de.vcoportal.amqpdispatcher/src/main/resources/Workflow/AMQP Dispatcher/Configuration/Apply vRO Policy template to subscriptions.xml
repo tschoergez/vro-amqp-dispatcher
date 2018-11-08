@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="dfaa6c96-71ed-4db5-a291-f5a48e9bc9bd" version="0.0.3" api-version="6.0.0" allowed-operations="vef" restartMode="1" resumeFromFailedMode="2">
+  <display-name><![CDATA[Apply vRO Policy template to subscriptions]]></display-name>
+  <position y="50.0" x="100.0"></position>
+  <input>
+    <param name="subscriptions" type="Array/AMQP:Subscription"></param>
+  </input>
+  <output>
+    <param name="createdPolicies" type="Array/Policy"></param>
+  </output>
+  <attrib name="policyTemplate" type="PolicyTemplate" read-only="false">
+    <value encoded="n"><![CDATA[dunes://service.dunes.ch/PolicyTemplate?id='1496848a-d20b-4623-8951-3642ad53f752'&dunesName='PolicyTemplate']]></value>
+  </attrib>
+  <attrib name="policies" type="Array/Policy" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="tempSubscriptions" type="Array/AMQP:Subscription" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="subscription" type="AMQP:Subscription" read-only="false"></attrib>
+  <attrib name="autoStart" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[true]]></value>
+  </attrib>
+  <attrib name="start" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[true]]></value>
+  </attrib>
+  <attrib name="policyOut" type="Policy" read-only="false"></attrib>
+  <attrib name="createdPoliciesTemp" type="Array/Policy" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <workflow-item name="item1" out-name="item2" type="task">
+    <display-name><![CDATA[copy to attribute]]></display-name>
+    <script encoded="false"><![CDATA[tempSubscriptions = subscriptions;
+policies = new Array();]]></script>
+    <in-binding>
+      <bind name="subscriptions" type="Array/AMQP:Subscription" export-name="subscriptions"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="policies" type="Array/Policy" export-name="policies"></bind>
+      <bind name="tempSubscriptions" type="Array/AMQP:Subscription" export-name="tempSubscriptions"></bind>
+    </out-binding>
+    <position y="55.90909090909091" x="205.0"></position>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item5" type="custom-condition" alt-out-name="item0">
+    <display-name><![CDATA[for each subscription]]></display-name>
+    <script encoded="false"><![CDATA[return tempSubscriptions.length > 0;]]></script>
+    <in-binding>
+      <bind name="tempSubscriptions" type="Array/AMQP:Subscription" export-name="tempSubscriptions"></bind>
+    </in-binding>
+    <position y="45.40909090909091" x="344.5"></position>
+  </workflow-item>
+  <workflow-item name="item3" type="end" end-mode="0">
+    <position y="172.68181818181816" x="384.5"></position>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item6" type="link" linked-workflow-id="FA808080808080808080808080808080EB828080013141141566711a974a8fef8">
+    <display-name><![CDATA[Apply policytemplate for AMQP subscription]]></display-name>
+    <in-binding>
+      <bind name="amqpPolicyTemplate" type="PolicyTemplate" export-name="policyTemplate"></bind>
+      <bind name="subscription" type="AMQP:Subscription" export-name="subscription"></bind>
+      <bind name="autoStart" type="boolean" export-name="autoStart"></bind>
+      <bind name="start" type="boolean" export-name="start"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="policyOut" type="Policy" export-name="policyOut"></bind>
+    </out-binding>
+    <position y="55.40909090909091" x="624.5"></position>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item4" type="task">
+    <display-name><![CDATA[get next subscription]]></display-name>
+    <script encoded="false"><![CDATA[subscription = tempSubscriptions.pop();]]></script>
+    <in-binding>
+      <bind name="tempSubscriptions" type="Array/AMQP:Subscription" export-name="tempSubscriptions"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="tempSubscriptions" type="Array/AMQP:Subscription" export-name="tempSubscriptions"></bind>
+      <bind name="subscription" type="AMQP:Subscription" export-name="subscription"></bind>
+    </out-binding>
+    <position y="55.40909090909091" x="484.5"></position>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item2" type="task">
+    <display-name><![CDATA[put policy to array]]></display-name>
+    <script encoded="false"><![CDATA[if (createdPoliciesTemp == null) createdPoliciesTemp = new Array();
+createdPoliciesTemp.push(policyOut);]]></script>
+    <in-binding>
+      <bind name="createdPoliciesTemp" type="Array/Policy" export-name="createdPoliciesTemp"></bind>
+      <bind name="policyOut" type="Policy" export-name="policyOut"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="createdPoliciesTemp" type="Array/Policy" export-name="createdPoliciesTemp"></bind>
+    </out-binding>
+    <position y="109.95454545454544" x="624.5"></position>
+  </workflow-item>
+  <workflow-item name="item0" out-name="item3" type="task">
+    <display-name><![CDATA[copy to out]]></display-name>
+    <script encoded="false"><![CDATA[createdPolicies = createdPoliciesTemp;]]></script>
+    <in-binding>
+      <bind name="createdPoliciesTemp" type="Array/Policy" export-name="createdPoliciesTemp"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="createdPolicies" type="Array/Policy" export-name="createdPolicies"></bind>
+    </out-binding>
+    <position y="119.04545454545453" x="345.0"></position>
+  </workflow-item>
+  <presentation>
+    <p-param name="subscriptions">
+      <desc><![CDATA[subscriptions]]></desc>
+    </p-param>
+  </presentation>
+</workflow>

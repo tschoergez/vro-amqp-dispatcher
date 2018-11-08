@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>vro.lab.vcoportal.de:8281</comment>
+<entry key="vso-build-nb">8071781</entry>
+<entry key="pkg-description"></entry>
+<entry key="pkg-name">de.vcoportal.amqpdispatcher</entry>
+<entry key="used-plugins">AMQP#1.0.4</entry>
+<entry key="pkg-owner">O=VMware,OU=Unknown,CN=vRO vro.lab.vcoportal.de 5b817bf3-51db-4a97-8a2d-6ca2b21056ca</entry>
+<entry key="vso-version">7.4.0.8071781</entry>
+<entry key="pkg-id">8589fcb865f811190166f18fb98303db</entry>
+</properties>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Exported from [server]</comment>
+<entry key="categoryPath">AMQP Dispatcher.Configuration</entry>
+<entry key="name">Apply vRO Policy template to subscriptions</entry>
+<entry key="type">Workflow</entry>
+<entry key="id">dfaa6c96-71ed-4db5-a291-f5a48e9bc9bd</entry>
+</properties>

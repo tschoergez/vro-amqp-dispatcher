@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Exported from [server]</comment>
+<entry key="categoryPath">AMQP Dispatcher</entry>
+<entry key="name">Dispatcher</entry>
+<entry key="type">Workflow</entry>
+<entry key="id">a532be3d-928c-4c4b-9dde-85667f1c3453</entry>
+</properties>

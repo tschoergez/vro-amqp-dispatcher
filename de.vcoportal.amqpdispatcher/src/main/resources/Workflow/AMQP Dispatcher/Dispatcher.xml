@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="a532be3d-928c-4c4b-9dde-85667f1c3453" version="0.0.31" api-version="6.0.0" allowed-operations="vef" restartMode="1" resumeFromFailedMode="1">
+  <display-name><![CDATA[Dispatcher]]></display-name>
+  <position y="50.0" x="100.0"></position>
+  <input>
+    <param name="amqpSubscription" type="AMQP:Subscription"></param>
+  </input>
+  <attrib name="receivedRoutingKey" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="inboundHeaders" type="Properties" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="bodyAsText" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="workflowToCall" type="Workflow" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="worktlowToken" type="WorkflowToken" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="workflowToCallInputParameters" type="Properties" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="correlationId" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="replyToRoutingKey" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="returnMessageBody" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="receivedExchange" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="nextTokenStatusCheck" type="Date" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="tokenCheckIntervalSeconds" type="number" read-only="false">
+    <value encoded="n"><![CDATA[8.0]]></value>
+  </attrib>
+  <attrib name="replyBroker" type="AMQP:Broker" read-only="false" conf-id="e4faf7de-a6f0-47ed-a404-94d136c2c464" conf-key="replyBroker">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="inboundProperties" type="Properties" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="workflowToCallConfig" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <attrib name="processWorkflowsResourceElement" type="ResourceElement" read-only="false">
+    <value encoded="n"><![CDATA[dunes://service.dunes.ch/ResourceElement?id='d677f892-8590-4ce8-8196-5bdc9bfb87a4'&dunesName='ResourceElement']]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="1544.5"></position>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item2" type="task">
+    <display-name><![CDATA[receive and parse amqp message]]></display-name>
+    <script encoded="false"><![CDATA[var amqpProperties = amqpSubscription.retrieveLastOnMessageTrigger();
+inboundProperties = amqpProperties.get("properties");
+System.debug("Inbound message properties: " + JSON.stringify(inboundProperties));
+correlationId = inboundProperties.get("correlation_id");
+
+var encoding = amqpProperties.get("encoding");
+var bodyAsText = amqpProperties.get("body");
+inboundHeaders = amqpProperties.get("headers");
+
+System.debug("headers: " + JSON.stringify(inboundHeaders));
+System.debug("encoding: " + encoding);
+
+System.debug("bodyAsText: " + bodyAsText);
+
+receivedRoutingKey = inboundProperties.get("received_routing_key");
+
+receivedExchange = inboundProperties.get("received_exchange");
+
+System.log("AMQP Dispatcher triggered from message bodyAsText: " + bodyAsText);
+]]></script>
+    <in-binding>
+      <bind name="amqpSubscription" type="AMQP:Subscription" export-name="amqpSubscription"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="receivedRoutingKey" type="string" export-name="receivedRoutingKey"></bind>
+      <bind name="inboundHeaders" type="Properties" export-name="inboundHeaders"></bind>
+      <bind name="bodyAsText" type="string" export-name="bodyAsText"></bind>
+      <bind name="receivedExchange" type="string" export-name="receivedExchange"></bind>
+      <bind name="inboundProperties" type="Properties" export-name="inboundProperties"></bind>
+      <bind name="correlationId" type="string" export-name="correlationId"></bind>
+    </out-binding>
+    <position y="55.40909090909091" x="204.5"></position>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item8" type="task">
+    <display-name><![CDATA[call workflow]]></display-name>
+    <script encoded="false"><![CDATA[
+worktlowToken = workflowToCall.execute(workflowToCallInputParameters);]]></script>
+    <in-binding>
+      <bind name="workflowToCall" type="Workflow" export-name="workflowToCall"></bind>
+      <bind name="workflowToCallInputParameters" type="Properties" export-name="workflowToCallInputParameters"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="worktlowToken" type="WorkflowToken" export-name="worktlowToken"></bind>
+    </out-binding>
+    <position y="55.40909090909091" x="644.5"></position>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item3" type="task">
+    <display-name><![CDATA[combine workflowInputs]]></display-name>
+    <script encoded="false"><![CDATA[workflowToCallInputParameters = new Properties();
+workflowToCallInputParameters.put("messageBody", bodyAsText);]]></script>
+    <in-binding>
+      <bind name="bodyAsText" type="string" export-name="bodyAsText"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="workflowToCallInputParameters" type="Properties" export-name="workflowToCallInputParameters"></bind>
+    </out-binding>
+    <position y="55.40909090909091" x="504.5"></position>
+  </workflow-item>
+  <workflow-item name="item7" out-name="item11" type="task">
+    <display-name><![CDATA[combine message]]></display-name>
+    <script encoded="false"><![CDATA[
+
+	var workflowState = wfToken.state.toUpperCase();
+	//VCE-349 change cancelled workflow to be compatible to marketplace status
+	(workflowState === "CANCELED") ? workflowState = "FAILED" : {};
+	var workflowException = wfToken.exception != null ? wfToken.exception : "";
+	var outputParameters = wfToken.getOutputParameters();
+	var wfExecutionTimeInMs = wfToken.endDateAsDate.getTime() - wfToken.startDateAsDate.getTime();
+
+
+	
+	
+	var workflowOutput = {
+		"workflowExecutionId" : wfToken.id,
+		"status" : workflowState,
+		"workflowException" : workflowException,
+		//map attributes and output parameters
+	}
+	
+
+	returnMessageBody = JSON.stringify(workflowOutput);
+
+]]></script>
+    <in-binding>
+      <bind name="wfToken" type="WorkflowToken" export-name="worktlowToken"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="returnMessageBody" type="string" export-name="returnMessageBody"></bind>
+    </out-binding>
+    <position y="55.40909090909091" x="1064.5"></position>
+  </workflow-item>
+  <workflow-item name="item8" out-name="item9" type="custom-condition" alt-out-name="item7">
+    <display-name><![CDATA[isTokenStillRunning?]]></display-name>
+    <script encoded="false"><![CDATA[if (wfToken != null && wfToken.isStillValid && wfToken.state != null &&
+	(wfToken.state == "running" ||
+		wfToken.state == "suspended" ||
+		wfToken.state == "waiting" ||
+		wfToken.state == "waiting-signal" ||
+		wfToken.state == "initializing"
+	)
+) { return true;
+} else return false;]]></script>
+    <in-binding>
+      <bind name="wfToken" type="WorkflowToken" export-name="worktlowToken"></bind>
+    </in-binding>
+    <position y="45.40909090909091" x="924.5"></position>
+  </workflow-item>
+  <workflow-item name="item9" out-name="item10" type="task">
+    <display-name><![CDATA[set interval]]></display-name>
+    <script encoded="false"><![CDATA[nextTokenStatusCheck = new Date((new Date()).getTime() + tokenCheckIntervalSeconds * 1000);]]></script>
+    <in-binding>
+      <bind name="tokenCheckIntervalSeconds" type="number" export-name="tokenCheckIntervalSeconds"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="nextTokenStatusCheck" type="Date" export-name="nextTokenStatusCheck"></bind>
+    </out-binding>
+    <position y="119.04545454545453" x="1064.5"></position>
+  </workflow-item>
+  <workflow-item name="item10" out-name="item8" type="waiting-timer">
+    <display-name><![CDATA[Waiting timer]]></display-name>
+    <in-binding>
+      <bind name="timer.date" type="Date" export-name="nextTokenStatusCheck">
+        <description><![CDATA[This timer item will wait until date and will continue workflow execution.]]></description>
+      </bind>
+    </in-binding>
+    <position y="109.04545454545453" x="944.5"></position>
+  </workflow-item>
+  <workflow-item name="item11" out-name="item0" type="task">
+    <display-name><![CDATA[send response message]]></display-name>
+    <script encoded="false"><![CDATA[
+var workflowToCallConfigObject = JSON.parse(workflowToCallConfig);
+var replyToRouting = {
+	"VALUE" : function () {
+			return workflowToCallConfigObject.responseRoutingKeyField;
+		},
+	"AMQPPROPERTY" : function() {
+			return inboundProperties.get(workflowToCallConfigObject.responseRoutingKeyField);
+		}
+		// ... for other sources
+	}
+	
+
+replyToRoutingKey = replyToRouting[workflowToCallConfigObject.responseRoutingKeySource]();
+
+System.log("sending AMQP message exchange='" + receivedExchange + "' , rountingKey='" + replyToRoutingKey + "' , correlationId='" + correlationId + ", messageBody:\n " + returnMessageBody);
+var message = new AMQPMessage();
+message.bodyAsText = returnMessageBody;
+messageProps = new Properties();
+messageProps.put("correlation_id", correlationId);
+message.properties = messageProps;
+
+messageHeaders = new Properties();
+System.debug("inboundHeaders: " + JSON.stringify(inboundHeaders));
+messageHeaders.put("someHeader", inboundHeaders.get("someHeader"));
+System.debug("outboundHeaders: " + JSON.stringify(messageHeaders));
+message.headers = messageHeaders;
+replyBroker.send(receivedExchange, replyToRoutingKey, message);]]></script>
+    <in-binding>
+      <bind name="correlationId" type="string" export-name="correlationId"></bind>
+      <bind name="replyToRoutingKey" type="string" export-name="replyToRoutingKey"></bind>
+      <bind name="returnMessageBody" type="string" export-name="returnMessageBody"></bind>
+      <bind name="receivedExchange" type="string" export-name="receivedExchange"></bind>
+      <bind name="replyBroker" type="AMQP:Broker" export-name="replyBroker"></bind>
+      <bind name="inboundHeaders" type="Properties" export-name="inboundHeaders"></bind>
+      <bind name="inboundProperties" type="Properties" export-name="inboundProperties"></bind>
+      <bind name="workflowToCallConfig" type="string" export-name="workflowToCallConfig"></bind>
+    </in-binding>
+    <out-binding></out-binding>
+    <position y="55.40909090909091" x="1204.5"></position>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item4" type="link" linked-workflow-id="65c6c48d-d21d-4844-aa25-d6b4ce24afd2">
+    <display-name><![CDATA[Find workflow to be called by Dispatcher]]></display-name>
+    <in-binding>
+      <bind name="inboundRoutingKey" type="string" export-name="receivedRoutingKey"></bind>
+      <bind name="inboundHeaders" type="Properties" export-name="inboundHeaders"></bind>
+      <bind name="inboundProperties" type="Properties" export-name="inboundProperties"></bind>
+      <bind name="processWorkflowsResourceElement" type="ResourceElement" export-name="processWorkflowsResourceElement"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="workflowToCall" type="Workflow" export-name="workflowToCall"></bind>
+      <bind name="workflowToCallConfig" type="string" export-name="workflowToCallConfig"></bind>
+    </out-binding>
+    <position y="55.90909090909091" x="365.0"></position>
+  </workflow-item>
+  <presentation>
+    <p-param name="amqpSubscription">
+      <desc><![CDATA[amqpSubscription]]></desc>
+    </p-param>
+  </presentation>
+</workflow>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="ae135671-f90a-4c72-9cde-c1a097e1ca11" version="0.0.13" api-version="6.0.0" allowed-operations="vef" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[RPC Create and subscribe to Queues]]></display-name>
+  <position y="50.0" x="100.0"></position>
+  <input>
+    <param name="broker" type="AMQP:Broker">
+      <description><![CDATA[Broker to declare queue in]]></description>
+    </param>
+    <param name="exchangeName" type="string">
+      <description><![CDATA[Name of the exchange to bind]]></description>
+    </param>
+    <param name="queueName" type="string">
+      <description><![CDATA[Name of the declared queue]]></description>
+    </param>
+  </input>
+  <output>
+    <param name="subscription" type="AMQP:Subscription">
+      <description><![CDATA[The created subscription]]></description>
+    </param>
+  </output>
+  <attrib name="durable" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[true]]></value>
+    <description><![CDATA[Defines if the new queue is durable.]]></description>
+  </attrib>
+  <attrib name="exclusive" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+    <description><![CDATA[Defines if the new queue is exclusive.]]></description>
+  </attrib>
+  <attrib name="autoDelete" type="boolean" read-only="false">
+    <value encoded="n"><![CDATA[false]]></value>
+    <description><![CDATA[Defines if the new queue is automatically deleted.]]></description>
+  </attrib>
+  <attrib name="queues" type="Array/string" read-only="false">
+    <description><![CDATA[Queues available in the broker for message subscription]]></description>
+  </attrib>
+  <attrib name="subscriptionName" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="944.5"></position>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item3" type="link" linked-workflow-id="9880808080808080808080808080808090808080013049260427240aee8dc5c71">
+    <display-name><![CDATA[Declare a queue]]></display-name>
+    <in-binding>
+      <bind name="broker" type="AMQP:Broker" export-name="broker">
+        <description><![CDATA[Broker to declare queue in]]></description>
+      </bind>
+      <bind name="name" type="string" export-name="queueName">
+        <description><![CDATA[Name of the declared queue]]></description>
+      </bind>
+      <bind name="durable" type="boolean" export-name="durable">
+        <description><![CDATA[Defines if the new queue is durable.]]></description>
+      </bind>
+      <bind name="exclusive" type="boolean" export-name="exclusive">
+        <description><![CDATA[Defines if the new queue is exclusive.]]></description>
+      </bind>
+      <bind name="autoDelete" type="boolean" export-name="autoDelete">
+        <description><![CDATA[Defines if the new queue is automatically deleted.]]></description>
+      </bind>
+    </in-binding>
+    <out-binding></out-binding>
+    <description><![CDATA[Adds a queue in a specified broker.]]></description>
+    <position y="55.40909090909091" x="344.5"></position>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item5" type="link" linked-workflow-id="98808080808080808080808080808080A4808080013049260427240aee8dc5c71">
+    <display-name><![CDATA[Bind]]></display-name>
+    <in-binding>
+      <bind name="broker" type="AMQP:Broker" export-name="broker">
+        <description><![CDATA[Broker to create a binding in]]></description>
+      </bind>
+      <bind name="queueName" type="string" export-name="queueName">
+        <description><![CDATA[Name of the queue to bind]]></description>
+      </bind>
+      <bind name="exchangeName" type="string" export-name="exchangeName">
+        <description><![CDATA[Name of the exchange to bind]]></description>
+      </bind>
+      <bind name="routingKey" type="string" export-name="queueName">
+        <description><![CDATA[Routing key for the binding]]></description>
+      </bind>
+    </in-binding>
+    <out-binding></out-binding>
+    <description><![CDATA[Creates a binding in a specified broker.]]></description>
+    <position y="55.40909090909091" x="484.5"></position>
+  </workflow-item>
+  <workflow-item name="item4" out-name="item0" type="link" linked-workflow-id="8B81808080808080808080808080808085808080012995053491651398b094fa1">
+    <display-name><![CDATA[Subscribe to queues]]></display-name>
+    <in-binding>
+      <bind name="broker" type="AMQP:Broker" export-name="broker">
+        <description><![CDATA[Broker to add subscription to]]></description>
+      </bind>
+      <bind name="queues" type="Array/string" export-name="queues">
+        <description><![CDATA[Queues available in the broker for message subscription]]></description>
+      </bind>
+      <bind name="name" type="string" export-name="subscriptionName">
+        <description><![CDATA[User-friendly name for this subscription]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="subscription" type="AMQP:Subscription" export-name="subscription">
+        <description><![CDATA[The created subscription]]></description>
+      </bind>
+    </out-binding>
+    <description><![CDATA[Creates a new subscription elements.]]></description>
+    <position y="55.40909090909091" x="764.5"></position>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item4" type="task">
+    <display-name><![CDATA[create queue name array]]></display-name>
+    <script encoded="false"><![CDATA[queues = new Array();
+queues.push(queueName);
+subscriptionName = queueName;]]></script>
+    <in-binding>
+      <bind name="queueName" type="string" export-name="queueName"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="queues" type="Array/string" export-name="queues"></bind>
+      <bind name="subscriptionName" type="string" export-name="subscriptionName"></bind>
+    </out-binding>
+    <position y="55.40909090909091" x="624.5"></position>
+  </workflow-item>
+  <presentation>
+    <p-param name="broker">
+      <desc><![CDATA[Broker to declare queue in]]></desc>
+    </p-param>
+    <p-param name="exchangeName">
+      <desc><![CDATA[Name of the exchange to bind]]></desc>
+    </p-param>
+    <p-param name="queueName">
+      <desc><![CDATA[Name of the declared queue]]></desc>
+    </p-param>
+  </presentation>
+</workflow>

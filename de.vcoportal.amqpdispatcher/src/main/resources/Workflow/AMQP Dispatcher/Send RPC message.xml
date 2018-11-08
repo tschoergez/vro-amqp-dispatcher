@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item2" object-name="workflow:name=generic" id="223740eb-971d-4ecd-9e02-1dd4180e066a" version="0.0.6" api-version="6.0.0" allowed-operations="vef" restartMode="1" resumeFromFailedMode="1">
+  <display-name><![CDATA[Send RPC message]]></display-name>
+  <position y="50.0" x="100.0"></position>
+  <input>
+    <param name="routingKey" type="string">
+      <description><![CDATA[Routing key for the message]]></description>
+    </param>
+    <param name="text" type="string">
+      <description><![CDATA[Text content of the message]]></description>
+    </param>
+    <param name="broker" type="AMQP:Broker">
+      <description><![CDATA[Broker to send a message from]]></description>
+    </param>
+    <param name="exchange" type="string">
+      <description><![CDATA[Exchange through which to send the message]]></description>
+    </param>
+  </input>
+  <output>
+    <param name="responseHeaders" type="Properties"></param>
+    <param name="responseProperties" type="Properties"></param>
+    <param name="responseBodyAsText" type="string"></param>
+  </output>
+  <attrib name="waitForResponseTimeout" type="number" read-only="false">
+    <value encoded="n"><![CDATA[0.0]]></value>
+  </attrib>
+  <attrib name="waitForMessageTrigger" type="Trigger" read-only="false">
+    <value encoded="n"><![CDATA[__NULL__]]></value>
+  </attrib>
+  <attrib name="responseQueue" type="string" read-only="false">
+    <value encoded="n"><![CDATA[]]></value>
+  </attrib>
+  <workflow-item name="item1" out-name="item5" type="task">
+    <display-name><![CDATA[send message]]></display-name>
+    <script encoded="false"><![CDATA[//var correlationId = System.nextUuid();
+var correlationId = workflow.id;
+var msgProps = new Properties();
+msgProps.put("reply_to", responseQueue);
+msgProps.put("correlation_id", correlationId);
+
+var msg = new AMQPMessage();
+msg.properties = msgProps;
+msg.bodyAsText = text;
+System.log("sending AMQP Message to routingKey: " + routingKey + " , correlationId: " + correlationId + " , waiting on responseQueue: " + responseQueue + "\n" + text);
+broker.send(exchange, routingKey, msg);]]></script>
+    <in-binding>
+      <bind name="broker" type="AMQP:Broker" export-name="broker"></bind>
+      <bind name="exchange" type="string" export-name="exchange"></bind>
+      <bind name="routingKey" type="string" export-name="routingKey"></bind>
+      <bind name="text" type="string" export-name="text"></bind>
+      <bind name="responseQueue" type="string" export-name="responseQueue"></bind>
+    </in-binding>
+    <out-binding></out-binding>
+    <position y="55.40909090909091" x="364.5"></position>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item6" type="waiting-event">
+    <display-name><![CDATA[Waiting event]]></display-name>
+    <in-binding>
+      <bind name="trigger.ref" type="Trigger" export-name="waitForMessageTrigger">
+        <description><![CDATA[Trigger waiting until specified event before continuing workflow execution.]]></description>
+      </bind>
+    </in-binding>
+    <position y="45.40909090909091" x="564.5"></position>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item3" type="task">
+    <display-name><![CDATA[Process a message]]></display-name>
+    <script encoded="false"><![CDATA[var msg = broker.retrieveMessage(messageTrigger);
+
+if (msg != null) {
+  body = msg.bodyAsText
+  properties = msg.properties;
+  headers = msg.headers;
+System.log("Inbound RPC answer message: " + "\n" + body);
+
+}]]></script>
+    <in-binding>
+      <bind name="broker" type="AMQP:Broker" export-name="broker"></bind>
+      <bind name="messageTrigger" type="Trigger" export-name="waitForMessageTrigger"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="body" type="string" export-name="responseBodyAsText"></bind>
+      <bind name="headers" type="Properties" export-name="responseHeaders"></bind>
+      <bind name="properties" type="Properties" export-name="responseProperties"></bind>
+    </out-binding>
+    <position y="55.40909090909091" x="664.5"></position>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item1" type="task">
+    <display-name><![CDATA[declare queue and create trigger]]></display-name>
+    <script encoded="false"><![CDATA[responseQueue = "repl-" + workflow.id;
+routingKey = responseQueue;
+	
+broker.declareQueue(responseQueue, {
+  durable: true,
+  exclusive: true,
+  autoDelete: true
+});
+broker.bind(responseQueue, exchange, {routingKey: routingKey});
+
+waitForMessageTrigger = broker.receiveAsync(responseQueue, waitForResponseTimeout);]]></script>
+    <in-binding>
+      <bind name="broker" type="AMQP:Broker" export-name="broker"></bind>
+      <bind name="exchange" type="string" export-name="exchange"></bind>
+      <bind name="waitForResponseTimeout" type="number" export-name="waitForResponseTimeout"></bind>
+    </in-binding>
+    <out-binding>
+      <bind name="responseQueue" type="string" export-name="responseQueue"></bind>
+      <bind name="waitForMessageTrigger" type="Trigger" export-name="waitForMessageTrigger"></bind>
+    </out-binding>
+    <position y="55.90909090909091" x="225.0"></position>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item0" type="task">
+    <display-name><![CDATA[delete Queue]]></display-name>
+    <script encoded="false"><![CDATA[broker.deleteQueue(responseQueue);]]></script>
+    <in-binding>
+      <bind name="broker" type="AMQP:Broker" export-name="broker"></bind>
+      <bind name="responseQueue" type="string" export-name="responseQueue"></bind>
+    </in-binding>
+    <out-binding></out-binding>
+    <position y="55.40909090909091" x="804.5"></position>
+  </workflow-item>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="965.0"></position>
+  </workflow-item>
+  <presentation>
+    <p-param name="routingKey">
+      <desc><![CDATA[Routing key for the message]]></desc>
+    </p-param>
+    <p-param name="text">
+      <desc><![CDATA[Text content of the message]]></desc>
+    </p-param>
+    <p-param name="broker">
+      <desc><![CDATA[Broker to send a message from]]></desc>
+    </p-param>
+    <p-param name="exchange">
+      <desc><![CDATA[Exchange through which to send the message]]></desc>
+    </p-param>
+  </presentation>
+</workflow>

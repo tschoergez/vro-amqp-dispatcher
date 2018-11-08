@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config-element id="e4faf7de-a6f0-47ed-a404-94d136c2c464" version="0.0.0">
+  <display-name><![CDATA[AMQP Dispatcher]]></display-name>
+  <atts>
+    <att name="replyBroker" type="AMQP:Broker" read-only="false">
+      <value encoded="n"><![CDATA[__NULL__]]></value>
+      <description><![CDATA[Broker the dispatcher workflow sends the response message over]]></description>
+    </att>
+  </atts>
+</config-element>

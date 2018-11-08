@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Exported from [server]</comment>
+<entry key="categoryPath">AMQP Dispatcher.Configuration</entry>
+<entry key="name">RPC Create and subscribe to Queues</entry>
+<entry key="type">Workflow</entry>
+<entry key="id">ae135671-f90a-4c72-9cde-c1a097e1ca11</entry>
+</properties>

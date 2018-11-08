@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dunes-policy name="AMQP Subscription for Dispatcher" type="0" api-version="6.0.0" id="1496848a-d20b-4623-8951-3642ad53f752" version="0.0.0" allowed-operations="vef">
+  <item tag="subscription" type="0" sdkType="AMQP:Subscription">
+    <event type="OnMessage" kind="trigger" active="false">
+      <workflow id="a532be3d-928c-4c4b-9dde-85667f1c3453">
+        <in-bindings>
+          <bind name="amqpSubscription" type="AMQP:Subscription" export-name="self"></bind>
+        </in-bindings>
+      </workflow>
+    </event>
+  </item>
+</dunes-policy>

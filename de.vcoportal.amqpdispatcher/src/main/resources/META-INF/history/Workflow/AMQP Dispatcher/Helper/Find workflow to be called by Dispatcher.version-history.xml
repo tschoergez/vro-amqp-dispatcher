@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<items>
+  <item>
+    <content initialized="false"/>
+    <ver>0.0.1</ver>
+    <date>20170228010231+0100</date>
+    <user>admin</user>
+    <cm><![CDATA[]]></cm>
+  </item>
+  <item>
+    <content initialized="false"/>
+    <ver>0.0.2</ver>
+    <date>20170228011150+0100</date>
+    <user>admin</user>
+    <cm><![CDATA[]]></cm>
+  </item>
+  <item>
+    <content initialized="false"/>
+    <ver>0.0.3</ver>
+    <date>20170228011309+0100</date>
+    <user>admin</user>
+    <cm><![CDATA[]]></cm>
+  </item>
+  <item>
+    <content initialized="false"/>
+    <ver>0.0.4</ver>
+    <date>20170725103015+0200</date>
+    <user>admin</user>
+    <cm><![CDATA[Change to Resource Element]]></cm>
+  </item>
+  <item>
+    <content initialized="false"/>
+    <ver>0.0.5</ver>
+    <date>20170803222111+0200</date>
+    <user>admin</user>
+    <cm><![CDATA[]]></cm>
+  </item>
+  <item>
+    <content initialized="false"/>
+    <ver>0.0.6</ver>
+    <date>20170803222429+0200</date>
+    <user>admin</user>
+    <cm><![CDATA[fix not-unique workflow findings]]></cm>
+  </item>
+  <last-content-signature>NxXAqkgrzbdIYBOSNk2eBj0e7E/ti0EOFbaDOa30ZBJwn4+KyNt1pYdt9PfKxqFpHndRYDNDjtaxHjIt3RPHZIvJAH6ed9w2XCXU7hijw5D3RJ7j1tzD8cIv3AEc/EtOlPP/zgQlvMyfGLBkNtrb1AGOGm6HwbdDRcYEk5o/af8P/JzEUMm0e2Fbmvdk6pxqI1Qe6G5hxlS4yzuNsyl6GN1BoQQzHFpnihe3o3p8ZHrtJtY8DEVhO0cJV2xhozZzsfs35Owf/AhN07NHZ9LeGo72egwSHG/sjzzkqyEbdatvIXYygbxrbBIKVJQm/GMFED4dXCBLZNOvwNP9Li85BQ==</last-content-signature>
+</items>

@@ -1,0 +1,138 @@
+[
+{
+"process": "resourcepool.save",
+"workflowToCall": "399fd790-0816-4348-ad48-6bc3247baef8",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "vro.resourcepool.state",
+"responseRoutingKeySource": "VALUE",
+"runConditionValue": "resourcepool.save"
+},
+{
+"process": "resourcepool.delete",
+"workflowToCall": "a7997b79-6a25-4e9a-b545-dff9809bc2e6",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "vro.resourcepool.state",
+"responseRoutingKeySource": "VALUE",
+"runConditionValue": "resourcepool.delete"
+},
+{
+"process": "eviction",
+"workflowToCall": "6097e521-805c-48f8-bc23-d1764413fcb1",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "vro.component-settlement.state",
+"responseRoutingKeySource": "VALUE",
+"runConditionValue": ".eviction"
+},
+{
+"process": "tradeinterlock",
+"workflowToCall": "4e51a6b9-135f-4693-b678-f5e86411661e",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "vro.component-settlement.state",
+"responseRoutingKeySource": "VALUE",
+"runConditionValue": ".tradeinterlock"
+},
+{
+"process": "resrouceusage.get",
+"workflowToCall": "72ceac8f-a776-43f4-9389-fd7fc9c7d5e6",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "reply_to",
+"responseRoutingKeySource": "AMQPPROPERTY",
+"runConditionValue": "resourceusage.get"
+},
+{
+"process": "latencyagentupdateconfig",
+"workflowToCall": "7dec01f9-0551-4597-91a1-1361e1f62cea",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "devnull",
+"responseRoutingKeySource": "VALUE",
+"runConditionValue": "latency-agent-update-config"
+},
+{
+"process": "latencyagentupdatepeers",
+"workflowToCall": "b01dc962-baa8-46a0-9752-562cb965bdf8",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "devnull",
+"responseRoutingKeySource": "VALUE",
+"runConditionValue": "latency-agent-update-peers"
+},
+{
+"process": "onorgupdate",
+"workflowToCall": "07b2c316-7103-49a5-b464-2e9640dd1643",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "devnull",
+"responseRoutingKeySource": "VALUE",
+"runConditionValue": "org-update"
+},
+{
+"process": "onbuyerorgupdate",
+"workflowToCall": "09c4c03c-aab4-40ab-b8d0-4ce85ba21633",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "devnull",
+"responseRoutingKeySource": "VALUE",
+"runConditionValue": "buyerorgupdate"
+},
+{
+"process": "latencytest",
+"workflowToCall": "07b2c316-7103-49a5-b464-2e9640dd1643",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "devnull",
+"responseRoutingKeySource": "VALUE",
+"runConditionValue": ".latencytest"
+},
+{
+"process": "processtradeinterlock",
+"workflowToCall": "2f3ef3e6-1e55-4b62-afad-619b09190990",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "reply_to",
+"responseRoutingKeySource": "AMQPPROPERTY",
+"runConditionValue": ".processtradeinterlock"
+},
+{
+"process": "processeviction",
+"workflowToCall": "daf93ef9-b7fe-41cd-adaa-4b883af3011e",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "reply_to",
+"responseRoutingKeySource": "AMQPPROPERTY",
+"runConditionValue": ".processeviction"
+},
+{
+"process": "cleanup",
+"workflowToCall": "ef75176c-b186-4ad9-9d2a-dc50561e46b1",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "reply_to",
+"responseRoutingKeySource": "AMQPPROPERTY",
+"runConditionValue": "cleanup"
+},
+{
+"process": "vmrcticket",
+"workflowToCall": "3eaec917-a414-4456-b0f0-b826c9c138b1",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "reply_to",
+"responseRoutingKeySource": "AMQPPROPERTY",
+"runConditionValue": ".vmrc.acquire.ticket"
+},
+{
+"process": "inventorysyncbuyer",
+"workflowToCall": "c5c155a4-d12b-4aff-b81b-0889cf47f53e",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "reply_to",
+"responseRoutingKeySource": "AMQPPROPERTY",
+"runConditionValue": ".inventory-service.buyer"
+},
+{
+"process": "inventorysyncseller",
+"workflowToCall": "98c79a60-ca2d-4147-9d12-84660b9727de",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "reply_to",
+"responseRoutingKeySource": "AMQPPROPERTY",
+"runConditionValue": ".inventory-service.seller"
+},
+{
+"process": "monitorresourcepool",
+"workflowToCall": "4809d392-4d1a-403b-82d0-b64c0282ec75",
+"runConditionSource": "ROUTINGKEY",
+"responseRoutingKeyField": "VALUE",
+"responseRoutingKeySource": "devnull",
+"runConditionValue": "resourcepool.monitoring.start"
+}
+]

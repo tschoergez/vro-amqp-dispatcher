@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Exported from [server]</comment>
+<entry key="categoryPath">AMQP Dispatcher.Configuration</entry>
+<entry key="name">Apply policytemplate for AMQP subscription</entry>
+<entry key="type">Workflow</entry>
+<entry key="id">FA808080808080808080808080808080EB828080013141141566711a974a8fef8</entry>
+</properties>

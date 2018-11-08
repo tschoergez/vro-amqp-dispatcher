@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Exported from [server]</comment>
+<entry key="categoryPath">AMQP Dispatcher</entry>
+<entry key="name">Send RPC message</entry>
+<entry key="type">Workflow</entry>
+<entry key="id">223740eb-971d-4ecd-9e02-1dd4180e066a</entry>
+</properties>

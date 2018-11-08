@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Exported from [server]</comment>
+<entry key="categoryPath">AMQP Dispatcher.Helper</entry>
+<entry key="name">Find workflow to be called by Dispatcher</entry>
+<entry key="type">Workflow</entry>
+<entry key="id">65c6c48d-d21d-4844-aa25-d6b4ce24afd2</entry>
+</properties>
